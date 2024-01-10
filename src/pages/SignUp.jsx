@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import CustomInput from "../components/CustomInput";
 import { toast } from "react-toastify";
+import { postNewAdmin } from "../helpers/axiosHelper";
 
 const SignUp = () => {
   const [form, setForm] = useState({});
@@ -42,44 +43,60 @@ const SignUp = () => {
       ...form,
       [name]: value,
     });
-    console.log(form);
+    // console.log(form);
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
 
     const { confirmPassword, ...rest } = form;
 
+    console.log(rest);
+
     if (confirmPassword !== rest.password) {
       toast.error("Passwords do not match ");
+      return;
     }
+
+    const userPending = postNewAdmin(rest);
+
+    toast.promise(userPending, {
+      pending: "Please wait....",
+    });
+
+    const { status, message } = await userPending;
+
+    console.log(message);
+
+    toast[status](message);
+
+    // we need to send the data to backend to verify
   };
 
   const inputs = [
     {
       label: "First Name",
-      name: "Name",
+      name: "fName",
       required: true,
       placeholder: "Sam",
     },
 
     {
       label: "Last Name",
-      name: " Last Name",
+      name: "lastName",
       required: true,
       placeholder: "Smith",
     },
     {
       label: "Email ",
-      name: "Email",
+      name: "email",
       required: true,
       placeholder: "Sam@email.com",
     },
 
     {
       label: "Phone",
-      name: "Phone",
-      required: true,
+      name: "phone",
       placeholder: "5434335",
     },
 
@@ -104,7 +121,10 @@ const SignUp = () => {
 
       <hr />
 
-      <Form className="w-50 m-auto border rounded shadow-lg p-3 mt-5">
+      <Form
+        className="w-50 m-auto border rounded shadow-lg p-3 mt-5"
+        onSubmit={handleOnSubmit}
+      >
         <h3>Admin signup only</h3>
         {inputs.map((item, i) => (
           <CustomInput key={i} {...item} onChange={handleOnChange} />
@@ -119,11 +139,7 @@ const SignUp = () => {
         </div>
 
         <div className="d-grid ">
-          <Button
-            type="submit"
-            disabled={passwordValidationError}
-            onSubmit={handleOnSubmit}
-          >
+          <Button type="submit" disabled={passwordValidationError}>
             Sign Up
           </Button>
         </div>
