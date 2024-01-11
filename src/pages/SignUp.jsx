@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import CustomInput from "../components/CustomInput";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { postNewAdmin } from "../helpers/axiosHelper";
 
 const SignUp = () => {
   const [form, setForm] = useState({});
   const [passwordValidationError, setPasswordValidationError] = useState("");
+
   const handleOnChange = (e) => {
     // password rules/regex
     //
@@ -48,29 +49,20 @@ const SignUp = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-
     const { confirmPassword, ...rest } = form;
-
-    console.log(rest);
-
     if (confirmPassword !== rest.password) {
-      toast.error("Passwords do not match ");
+      toast.error("Password do not match");
       return;
     }
 
-    const userPending = postNewAdmin(rest);
+    const userPening = postNewAdmin(rest);
 
-    toast.promise(userPending, {
-      pending: "Please wait....",
+    toast.promise(userPening, {
+      pending: "Please wait...",
     });
 
-    const { status, message } = await userPending;
-
-    console.log(message);
-
+    const { status, message } = await userPening;
     toast[status](message);
-
-    // we need to send the data to backend to verify
   };
 
   const inputs = [
@@ -143,6 +135,7 @@ const SignUp = () => {
             Sign Up
           </Button>
         </div>
+        <ToastContainer />
       </Form>
     </div>
   );
