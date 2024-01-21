@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         {/* public routes */}
         <Route path="/" element={<SignIn />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
 
         {/* private routes */}
         <Route path="/signup" element={<SignUp />} />
