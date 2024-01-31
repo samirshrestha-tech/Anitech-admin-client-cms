@@ -30,3 +30,13 @@ export const postNewAdmin = (data) => {
     data,
   });
 };
+
+// user email verification
+
+export const verifyNewUser = (data) => {
+  return apiProcessor({
+    method: "post",
+    url: userApi + "/verify-email",
+    data,
+  });
+};
