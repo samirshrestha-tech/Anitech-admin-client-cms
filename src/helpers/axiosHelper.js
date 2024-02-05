@@ -40,3 +40,13 @@ export const verifyNewUser = (data) => {
     data,
   });
 };
+
+// sign in verification
+
+export const signInUser = (data) => {
+  return apiProcessor({
+    method: "post",
+    url: userApi + "/signin",
+    data,
+  });
+};
